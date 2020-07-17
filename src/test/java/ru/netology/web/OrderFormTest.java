@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byCssSelector;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -27,14 +28,14 @@ public class OrderFormTest {
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
-        $(byText("Успешно!")).waitUntil(visible, 11000);
+        $(byText("Запланировать")).click();
+        $(byText("Успешно!")).isDisplayed();
     }
 
     @Test
     void shouldSendEmptyForm() {
         open("http://localhost:9999");
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(byText("Поле обязательно для заполнения")).isDisplayed();
     }
 
@@ -50,7 +51,7 @@ public class OrderFormTest {
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(byText("Доставка в выбранный город недоступна")).isDisplayed();
     }
 
@@ -63,7 +64,7 @@ public class OrderFormTest {
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(byText("Неверно введена дата")).isDisplayed();
     }
 
@@ -80,7 +81,7 @@ public class OrderFormTest {
         $("[name='name']").setValue("456211");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(byText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.")).isDisplayed();
     }
 
@@ -97,7 +98,7 @@ public class OrderFormTest {
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("89998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(byText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.")).isDisplayed();
     }
 
@@ -113,7 +114,7 @@ public class OrderFormTest {
         $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("+79998887766");
-        $(byText("Забронировать")).click();
+        $(byText("Запланировать")).click();
         $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
@@ -130,8 +131,7 @@ public class OrderFormTest {
         $("[name='name']").setValue("Петров Николай");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
-        $(byText("Забронировать")).click();
-        $(byText("Успешно!")).waitUntil(visible, 11000);
-        $(".notification__closer").click();
+        $(byText("Запланировать")).click();
+        $(".notification_visible").findElement(byCssSelector("[type='button']")).click();
     }
 }
