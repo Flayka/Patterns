@@ -1,55 +1,61 @@
-package ru.netology.web;
+package ru.netology.web.test;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byCssSelector;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static ru.netology.web.data.DataGenerator.*;
 
 public class OrderFormTest {
 
-    @Test
-    void shouldFillCorrectRegister() {
+    public String city = getCity();
+    public String name = getName();
+    public String date = getDate();
+    public String newDate = getNewDate();
+    public String phone = getPhone();
+
+    @BeforeEach
+    void setUpAll() {
         open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Барнаул");
+    }
+
+    @Test
+    void shouldFillCorrectRegisterNewDate() {
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
-        $("[name='name']").setValue("Петров Николай");
-        $("[name='phone']").setValue("+79998887766");
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Успешно!")).isDisplayed();
+
+        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[placeholder='Дата встречи']").setValue(newDate);
+        $(byText("Запланировать")).click();
+
+        $(byText("Перепланировать")).click();
+        $(".notification_visible").shouldHave(text("Успешно!"));
     }
 
     @Test
     void shouldSendEmptyForm() {
-        open("http://localhost:9999");
         $(byText("Запланировать")).click();
         $(byText("Поле обязательно для заполнения")).isDisplayed();
     }
 
     @Test
     void shouldWrongCity() {
-        open("http://localhost:9999");
         $("[placeholder='Город']").setValue("Париж");
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
-        $("[name='name']").setValue("Петров Николай");
-        $("[name='phone']").setValue("+79998887766");
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Доставка в выбранный город недоступна")).isDisplayed();
@@ -57,12 +63,11 @@ public class OrderFormTest {
 
     @Test
     void shouldNoDate() {
-        open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Абакан");
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[name='name']").setValue("Петров Николай");
-        $("[name='phone']").setValue("+79998887766");
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Неверно введена дата")).isDisplayed();
@@ -70,14 +75,10 @@ public class OrderFormTest {
 
     @Test
     void shouldWrongName() {
-        open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Барнаул");
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
+        $("[placeholder='Дата встречи']").setValue(date);
         $("[name='name']").setValue("456211");
         $("[name='phone']").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
@@ -87,15 +88,11 @@ public class OrderFormTest {
 
     @Test
     void shouldwrongPhone() {
-        open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Барнаул");
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
-        $("[name='name']").setValue("Петров Николай");
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
         $("[name='phone']").setValue("89998887766");
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
@@ -104,34 +101,46 @@ public class OrderFormTest {
 
     @Test
     void shouldNotmarkCheckbox() {
-        open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Барнаул");
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
-        $("[name='name']").setValue("Петров Николай");
-        $("[name='phone']").setValue("+79998887766");
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
         $(byText("Запланировать")).click();
         $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
     @Test
     void shouldClosePopup() {
-        open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Барнаул");
+        $("[placeholder='Город']").setValue(city);
         $(".menu-item_type_block").click();
         $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        $("[placeholder='Дата встречи']").setValue(format.format(cal.getTime()));
-        $("[name='name']").setValue("Петров Николай");
-        $("[name='phone']").setValue("+79998887766");
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
-        $(".notification_visible").findElement(byCssSelector("[type='button']")).click();
+        $(".icon").click();
+    }
+
+    @Test
+    void shouldClosePopupNewDate() {
+        $("[placeholder='Город']").setValue(city);
+        $(".menu-item_type_block").click();
+        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[placeholder='Дата встречи']").setValue(date);
+        $("[name='name']").setValue(name);
+        $("[name='phone']").setValue(phone);
+        $("[data-test-id='agreement']").click();
+        $(byText("Запланировать")).click();
+        $(byText("Успешно!")).isDisplayed();
+
+        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[placeholder='Дата встречи']").setValue(newDate);
+        $(byText("Запланировать")).click();
+
+        $(byText("Перепланировать")).click();
+        $(".icon").click();
     }
 }
