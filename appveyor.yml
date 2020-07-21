@@ -1,4 +1,4 @@
-image: Ubuntu1804  # образ для сборки
+image: Ubuntu  # образ для сборки
 
 branches:
   only:
@@ -12,6 +12,3 @@ install:
 
 build_script:
   - ./gradlew test "-Dselenide.headless=true"
-
-on_finish:
-  - Stop-Process -Id $App.Id  # оставливаем SUT
