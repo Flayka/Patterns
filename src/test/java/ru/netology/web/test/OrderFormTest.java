@@ -25,18 +25,18 @@ public class OrderFormTest {
 
     @Test
     void shouldFillCorrectRegisterNewDate() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Успешно!")).isDisplayed();
 
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(newDate);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(newDate);
         $(byText("Запланировать")).click();
 
         $(byText("Перепланировать")).click();
@@ -51,11 +51,11 @@ public class OrderFormTest {
 
     @Test
     void shouldWrongCity() {
-        $("[placeholder='Город']").setValue("Париж");
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='city'] .input__control").setValue("Париж");
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Доставка в выбранный город недоступна")).isDisplayed();
@@ -63,11 +63,11 @@ public class OrderFormTest {
 
     @Test
     void shouldNoDate() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Неверно введена дата")).isDisplayed();
@@ -75,12 +75,12 @@ public class OrderFormTest {
 
     @Test
     void shouldWrongName() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue("456211");
-        $("[name='phone']").setValue("+79998887766");
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue("456211");
+        $("[data-test-id='phone'] .input__control").setValue("+79998887766");
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.")).isDisplayed();
@@ -88,12 +88,12 @@ public class OrderFormTest {
 
     @Test
     void shouldwrongPhone() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue("89998887766");
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue("89998887766");
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.")).isDisplayed();
@@ -101,24 +101,24 @@ public class OrderFormTest {
 
     @Test
     void shouldNotmarkCheckbox() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $(byText("Запланировать")).click();
         $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
     @Test
     void shouldClosePopup() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(".icon").click();
@@ -126,18 +126,18 @@ public class OrderFormTest {
 
     @Test
     void shouldClosePopupNewDate() {
-        $("[placeholder='Город']").setValue(city);
+        $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(date);
-        $("[name='name']").setValue(name);
-        $("[name='phone']").setValue(phone);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(date);
+        $("[data-test-id='name'] .input__control").setValue(name);
+        $("[data-test-id='phone'] .input__control").setValue(phone);
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Успешно!")).isDisplayed();
 
-        $("[placeholder='Дата встречи']").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[placeholder='Дата встречи']").setValue(newDate);
+        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        $("[data-test-id='date'] .input__control").setValue(newDate);
         $(byText("Запланировать")).click();
 
         $(byText("Перепланировать")).click();
