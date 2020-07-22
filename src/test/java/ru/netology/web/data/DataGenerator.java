@@ -3,6 +3,8 @@ package ru.netology.web.data;
 import com.github.javafaker.Faker;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DataGenerator {
@@ -17,17 +19,13 @@ public class DataGenerator {
     }
 
     public static String getDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 3);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.format(cal.getTime());
+        LocalDate date = LocalDate.now().plusDays(3);
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public static String getNewDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, 5);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        return format.format(cal.getTime());
+        LocalDate date = LocalDate.now().plusDays(7);
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public static String getName() {

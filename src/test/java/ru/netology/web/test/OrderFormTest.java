@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.web.data.DataGenerator.*;
 
 public class OrderFormTest {
@@ -24,7 +26,7 @@ public class OrderFormTest {
     }
 
     @Test
-    void shouldFillCorrectRegisterNewDate() {
+    void shouldPlanAndReplanMeeting() {
         $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -34,6 +36,8 @@ public class OrderFormTest {
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(byText("Успешно!")).isDisplayed();
+        String firstDate = $(".notification__content").getText();
+        assertEquals("Встреча успешно запланирована на " + getDate(), firstDate);
 
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
         $("[data-test-id='date'] .input__control").setValue(newDate);
@@ -41,16 +45,18 @@ public class OrderFormTest {
 
         $(byText("Перепланировать")).click();
         $(".notification_visible").shouldHave(text("Успешно!"));
+        String secondDate = $("[data-test-id='success-notification'] .notification__content").getText();
+        assertEquals("Встреча успешно запланирована на " + getNewDate(), secondDate);
     }
 
     @Test
-    void shouldSendEmptyForm() {
+    void shouldGetErrorMessageIfSendEmptyForm() {
         $(byText("Запланировать")).click();
         $(byText("Поле обязательно для заполнения")).isDisplayed();
     }
 
     @Test
-    void shouldWrongCity() {
+    void shouldGetErrorMessageIfWrongCity() {
         $("[data-test-id='city'] .input__control").setValue("Париж");
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
         $("[data-test-id='date'] .input__control").setValue(date);
@@ -62,7 +68,7 @@ public class OrderFormTest {
     }
 
     @Test
-    void shouldNoDate() {
+    void shouldGetErrorMessageIfDateEmpty() {
         $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -74,7 +80,7 @@ public class OrderFormTest {
     }
 
     @Test
-    void shouldWrongName() {
+    void shouldGetErrorMessageIfWrongName() {
         $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -87,7 +93,7 @@ public class OrderFormTest {
     }
 
     @Test
-    void shouldwrongPhone() {
+    void shouldGetErrorMessageIfWrongPhone() {
         $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -100,7 +106,7 @@ public class OrderFormTest {
     }
 
     @Test
-    void shouldNotmarkCheckbox() {
+    void shouldGetErrorMessageIfNotMarkCheckbox() {
         $("[data-test-id='city'] .input__control").setValue(city);
         $(".menu-item_type_block").click();
         $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -108,7 +114,7 @@ public class OrderFormTest {
         $("[data-test-id='name'] .input__control").setValue(name);
         $("[data-test-id='phone'] .input__control").setValue(phone);
         $(byText("Запланировать")).click();
-        $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
+        $("[data-test-id='agreement'] .checkbox__text").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
     @Test
@@ -122,25 +128,6 @@ public class OrderFormTest {
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(".icon").click();
-    }
-
-    @Test
-    void shouldClosePopupNewDate() {
-        $("[data-test-id='city'] .input__control").setValue(city);
-        $(".menu-item_type_block").click();
-        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[data-test-id='date'] .input__control").setValue(date);
-        $("[data-test-id='name'] .input__control").setValue(name);
-        $("[data-test-id='phone'] .input__control").setValue(phone);
-        $("[data-test-id='agreement']").click();
-        $(byText("Запланировать")).click();
-        $(byText("Успешно!")).isDisplayed();
-
-        $("[data-test-id='date'] .input__control").sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
-        $("[data-test-id='date'] .input__control").setValue(newDate);
-        $(byText("Запланировать")).click();
-
-        $(byText("Перепланировать")).click();
-        $(".icon").click();
+        $("[data-test-id='success-notification']").shouldHave(text("Успешно!")).shouldNotBe(visible);
     }
 }
